@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">FieldSync</string>
+    <string name="new_form">Nuevo Relevamiento</string>
+    <string name="view_records">Ver Registros</string>
+    <string name="settings">Configuración</string>
+    <string name="sync_now">Sincronizar</string>
+    <string name="export_csv">Exportar CSV</string>
+    <string name="import_csv">Importar CSV</string>
+    <string name="online">En línea</string>
+    <string name="offline">Sin conexión</string>
+    <string name="pending">pendiente</string>
+    <string name="synced">sincronizado</string>
+</resources>
