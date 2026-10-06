@@ -31,6 +31,10 @@ The system guarantees local transactional persistence through SQLite, background
 
 * **Native Offline-First Architecture:** Every operation (order, inventory, audit, incident) is written immediately and atomically to the device's local SQLite database. The application never blocks the user interface and never fails during network outages.
 
+* **Multi-Language Support (i18n):** Fully localized interface supporting 3 languages: English, Spanish, and Portuguese, dynamically adapting to the user's preferred device locale.
+
+* **Adaptive Theming (Dark & Light Mode):** Native support for both Dark and Light themes that automatically responds to system-level display preferences, optimizing legibility in outdoor bright light as well as low-light field environments.
+
 * **Automatic Sync with WorkManager:** Periodic and reactive task queuing subject to connectivity constraints (`NetworkType.CONNECTED`). Upon detecting a network, the engine dispatches pending batches transparently in the background.
 
 * **Transactional Integrity and Idempotency:** UUID-based unique identifiers generated on the client prevent duplicates on the central server. The engine marks confirmed records as synced locally only after receiving formal validation from the backend.
@@ -57,19 +61,23 @@ The system guarantees local transactional persistence through SQLite, background
 
 1. **Field Transaction Capture (`MainActivity.kt`):** Ergonomic form optimized for rapid entry of orders, stock control, or damage assessment with structured classification.
 
-2. **Local Persistence Layer (`DatabaseHelper.kt`):** SQLite engine that encapsulates safe transactions (`beginTransaction` / `endTransaction`), serialization to JSON objects, and delivery flag control.
+2. **Internationalization & Theming Layer:** Resource-driven localization engine handling 3 languages (English, Spanish, Portuguese) and dynamic UI style attributes that toggle seamlessly between Dark and Light mode.
 
-3. **Network Integration Client (`ApiService.kt`):** Low-level module based on `HttpURLConnection` that dispatches authenticable requests, validates HTTP status codes, and extracts lists of processed identifiers.
+3. **Local Persistence Layer (`DatabaseHelper.kt`):** SQLite engine that encapsulates safe transactions (`beginTransaction` / `endTransaction`), serialization to JSON objects, and delivery flag control.
 
-4. **Background Orchestrator (`SyncWorker.kt`):** Asynchronous task decoupled from the user interface lifecycle that guarantees compliance with dispatch policies according to hardware conditions.
+4. **Network Integration Client (`ApiService.kt`):** Low-level module based on `HttpURLConnection` that dispatches authenticable requests, validates HTTP status codes, and extracts lists of processed identifiers.
 
-5. **Central Receiving Server (`server.js`):** Transactional REST API that receives batches, updates consolidated state through prepared statements, and exposes inspection queries.
+5. **Background Orchestrator (`SyncWorker.kt`):** Asynchronous task decoupled from the user interface lifecycle that guarantees compliance with dispatch policies according to hardware conditions.
+
+6. **Central Receiving Server (`server.js`):** Transactional REST API that receives batches, updates consolidated state through prepared statements, and exposes inspection queries.
 
 ---
 
 ## 🛠️ Tech Stack
 
 * **Mobile Language:** Kotlin 2.0.
+* **UI & Theming:** Android Material Components (Dynamic DayNight theme switching for Dark/Light mode).
+* **Internationalization:** Android Resource Framework (English, Spanish, Portuguese string catalogs).
 * **Client Persistence:** Native SQLite (`SQLiteOpenHelper`) with no heavy dependency overhead.
 * **Task Scheduling:** Android Jetpack `WorkManager`.
 * **Mobile Network Layer:** Native HTTP with standard JSON serialization.
