@@ -36,18 +36,27 @@ class ListAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: FormEntity) {
+            val ctx = binding.root.context
+
             binding.txtClient.text = item.clientName
             binding.txtAgent.text = item.agentName
             binding.txtType.text = item.formType
             binding.txtDate.text = formatDate(item.createdAt)
-            binding.txtStatus.text = item.status
+
+            val statusText = when (item.status) {
+                "synced" -> ctx.getString(R.string.synced)
+                "pending" -> ctx.getString(R.string.pending)
+                "error" -> ctx.getString(R.string.pending)
+                else -> item.status
+            }
+            binding.txtStatus.text = statusText
 
             val colorRes = when (item.status) {
                 "synced" -> R.color.status_synced
                 "error" -> R.color.status_error
                 else -> R.color.status_pending
             }
-            binding.txtStatus.setTextColor(binding.root.context.getColor(colorRes))
+            binding.txtStatus.setTextColor(ctx.getColor(colorRes))
 
             binding.btnDelete.setOnClickListener { onDelete(item) }
         }

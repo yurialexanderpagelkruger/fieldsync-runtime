@@ -5,7 +5,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.fieldsync.app.FieldSyncApplication
+import com.fieldsync.app.R
 import com.fieldsync.app.data.network.RetrofitClient
+import com.fieldsync.app.data.repository.FormRepository
 import com.fieldsync.app.data.sync.SyncScheduler
 import com.fieldsync.app.databinding.ActivitySettingsBinding
 import kotlinx.coroutines.launch
@@ -24,24 +26,24 @@ class SettingsActivity : AppCompatActivity() {
         binding.btnSaveUrl.setOnClickListener {
             val url = binding.etUrl.text.toString().trim()
             if (url.isEmpty()) {
-                Toast.makeText(this, "Ingrese una URL", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.msg_url_empty), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             RetrofitClient.setBaseUrl(url)
-            Toast.makeText(this, "URL guardada", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.msg_url_saved), Toast.LENGTH_SHORT).show()
         }
 
         binding.btnTest.setOnClickListener {
             val app = application as FieldSyncApplication
             lifecycleScope.launch {
-                val repo = com.fieldsync.app.data.repository.FormRepository(
+                val repo = FormRepository(
                     app.database.formDao(),
                     RetrofitClient.create()
                 )
                 val ok = repo.testConnection()
                 Toast.makeText(
                     this@SettingsActivity,
-                    if (ok) "Conexión exitosa" else "No se pudo conectar",
+                    if (ok) getString(R.string.msg_connection_ok) else getString(R.string.msg_connection_fail),
                     Toast.LENGTH_LONG
                 ).show()
             }
@@ -49,7 +51,7 @@ class SettingsActivity : AppCompatActivity() {
 
         binding.btnSyncNow.setOnClickListener {
             SyncScheduler.runNow(this)
-            Toast.makeText(this, "Sincronización programada", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.msg_sync_scheduled), Toast.LENGTH_SHORT).show()
         }
     }
 }

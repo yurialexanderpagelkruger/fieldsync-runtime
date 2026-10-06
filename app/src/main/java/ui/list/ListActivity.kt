@@ -1,11 +1,13 @@
 package com.fieldsync.app.ui.list
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fieldsync.app.FieldSyncApplication
+import com.fieldsync.app.R
 import com.fieldsync.app.data.repository.FormRepository
 import com.fieldsync.app.databinding.ActivityListBinding
 import com.fieldsync.app.util.CsvExporter
@@ -28,7 +30,7 @@ class ListActivity : AppCompatActivity() {
         adapter = ListAdapter { form ->
             lifecycleScope.launch {
                 repository.delete(form.id)
-                Toast.makeText(this@ListActivity, "Registro eliminado", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@ListActivity, getString(R.string.msg_record_deleted), Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -40,7 +42,7 @@ class ListActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repository.observeAll().collect { list ->
                 adapter.submit(list)
-                binding.txtEmpty.visibility = if (list.isEmpty()) android.view.View.VISIBLE else android.view.View.GONE
+                binding.txtEmpty.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
             }
         }
     }
@@ -49,7 +51,7 @@ class ListActivity : AppCompatActivity() {
         lifecycleScope.launch {
             val all = repository.getAll()
             if (all.isEmpty()) {
-                Toast.makeText(this@ListActivity, "No hay registros", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@ListActivity, getString(R.string.msg_no_records), Toast.LENGTH_SHORT).show()
                 return@launch
             }
             val file = CsvExporter.export(this@ListActivity, all)

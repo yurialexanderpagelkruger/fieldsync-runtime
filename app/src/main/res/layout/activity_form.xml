@@ -12,7 +12,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nuevo Relevamiento"
+            android:text="@string/title_new_form"
             android:textSize="22sp"
             android:textStyle="bold"
             android:textColor="@color/primary"
@@ -22,40 +22,40 @@
             android:id="@+id/etAgent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Agente / Vendedor"
+            android:hint="@string/field_agent"
             android:inputType="textPersonName" />
 
         <EditText
             android:id="@+id/etClient"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Cliente / Razón social" />
+            android:hint="@string/field_client" />
 
         <EditText
             android:id="@+id/etLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Ubicación (opcional)" />
+            android:hint="@string/field_location" />
 
         <EditText
             android:id="@+id/etProduct"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Producto / Ítem"
+            android:hint="@string/field_product"
             android:layout_marginTop="12dp" />
 
         <EditText
             android:id="@+id/etQuantity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Cantidad"
+            android:hint="@string/field_quantity"
             android:inputType="number" />
 
         <EditText
             android:id="@+id/etNotes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Observaciones"
+            android:hint="@string/field_notes"
             android:inputType="textMultiLine"
             android:minLines="3"
             android:gravity="top" />
@@ -65,14 +65,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="Guardar (offline)" />
+            android:text="@string/btn_save_offline" />
 
         <Button
             android:id="@+id/btnCancel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Cancelar"
+            android:text="@string/btn_cancel"
             style="?attr/materialButtonOutlinedStyle" />
 
     </LinearLayout>

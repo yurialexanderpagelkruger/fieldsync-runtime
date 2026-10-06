@@ -5,6 +5,7 @@ import android.provider.Settings
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.fieldsync.app.FieldSyncApplication
+import com.fieldsync.app.R
 import com.fieldsync.app.databinding.ActivityFormBinding
 
 class FormActivity : AppCompatActivity() {
@@ -32,7 +33,7 @@ class FormActivity : AppCompatActivity() {
         val notes = binding.etNotes.text.toString().trim()
 
         if (agent.isEmpty() || client.isEmpty() || product.isEmpty() || quantity.isEmpty()) {
-            Toast.makeText(this, "Complete los campos obligatorios", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.msg_required_fields), Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -47,7 +48,7 @@ class FormActivity : AppCompatActivity() {
 
         binding.btnSave.isEnabled = false
         viewModel.saveForm(deviceId, agent, client, "inventory", fields) {
-            Toast.makeText(this, "Guardado localmente", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.msg_saved_local), Toast.LENGTH_SHORT).show()
             finish()
         }
     }

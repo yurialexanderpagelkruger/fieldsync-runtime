@@ -1,5 +1,7 @@
 package com.fieldsync.app.data.repository
 
+import android.content.Context
+import com.fieldsync.app.R
 import com.fieldsync.app.data.database.FormDao
 import com.fieldsync.app.data.database.FormEntity
 import com.fieldsync.app.data.network.ApiService
@@ -57,9 +59,12 @@ class FormRepository(
 
     suspend fun delete(id: String) = dao.deleteById(id)
 
-    suspend fun syncPending(): SyncResult {
+    suspend fun syncPending(context: Context? = null): SyncResult {
         val pending = dao.getPending()
-        if (pending.isEmpty()) return SyncResult(0, 0, 0, "Sin registros pendientes")
+        if (pending.isEmpty()) {
+            val msg = context?.getString(R.string.msg_sync_none) ?: "Sin registros pendientes"
+            return SyncResult(0, 0, 0, msg)
+        }
 
         val records = pending.map { entity ->
             @Suppress("UNCHECKED_CAST")
@@ -91,14 +96,19 @@ class FormRepository(
                         dao.updateStatus(id, "error", null, now)
                     }
                 }
-                SyncResult(body.syncedCount, body.failedCount, pending.size, "Sincronizado")
+                val msg = context?.getString(R.string.msg_sync_success) ?: "Sincronizado"
+                SyncResult(body.syncedCount, body.failedCount, pending.size, msg)
             } else {
                 pending.forEach { dao.incrementAttempts(it.id) }
-                SyncResult(0, pending.size, pending.size, "Error servidor ${response.code()}")
+                val msg = context?.getString(R.string.msg_sync_server_error, response.code())
+                    ?: "Error servidor ${response.code()}"
+                SyncResult(0, pending.size, pending.size, msg)
             }
         } catch (e: Exception) {
             pending.forEach { dao.incrementAttempts(it.id) }
-            SyncResult(0, pending.size, pending.size, "Error: ${e.message}")
+            val msg = context?.getString(R.string.msg_sync_error, e.message ?: "")
+                ?: "Error: ${e.message}"
+            SyncResult(0, pending.size, pending.size, msg)
         }
     }
 

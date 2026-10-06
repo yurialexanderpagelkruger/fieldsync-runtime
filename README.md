@@ -1,12 +1,12 @@
 # FieldSync
 
-**FieldSync** es una plataforma móvil *offline-first* y motor de sincronización transaccional para operaciones en terreno, desarrollada en Kotlin para Android junto a un backend ligero en Node.js. Diseñada específicamente para resolver los cuellos de botella de distribuidoras, centros logísticos, cuadrillas de mantenimiento y empresas de servicios técnicos, *FieldSync* reemplaza las planillas manuales en papel y las transcripciones propensas a errores por un flujo de trabajo digital resiliente que opera con total normalidad en zonas sin conectividad.
+**FieldSync** is an *offline-first* mobile platform and transactional synchronization engine for field operations, built in Kotlin for Android alongside a lightweight Node.js backend. Purpose-built to eliminate the bottlenecks faced by distributors, logistics centers, maintenance crews, and technical service companies, *FieldSync* replaces manual paper forms and error-prone transcribing with a resilient digital workflow that operates flawlessly in areas with no connectivity.
 
-El sistema garantiza persistencia transaccional local mediante SQLite, encolamiento en segundo plano gobernado por `WorkManager` y sincronización bidireccional idempotente en cuanto el dispositivo recupera señal de red, protegiendo la integridad de cada registro antes de consolidarlo en el servidor central.
+The system guarantees local transactional persistence through SQLite, background queuing governed by `WorkManager`, and idempotent two-way synchronization as soon as the device regains network signal, protecting the integrity of every record before consolidating it on the central server.
 
 ---
 
-## 📸 Capturas de Pantalla
+## 📸 Screenshots
 
 <table align="center" style="border-collapse: collapse; border: 1px solid #333;">
   <tr>
@@ -27,63 +27,63 @@ El sistema garantiza persistencia transaccional local mediante SQLite, encolamie
   </tr>
 </table>
 
-## ✨ Características Principales
+## ✨ Key Features
 
-* **Arquitectura Offline-First Nativa:** Toda operación (pedido, inventario, auditoría, incidencia) se escribe de manera inmediata y atómica en la base de datos SQLite local del dispositivo. La aplicación jamás bloquea la interfaz de usuario ni falla ante cortes de red.
+* **Native Offline-First Architecture:** Every operation (order, inventory, audit, incident) is written immediately and atomically to the device's local SQLite database. The application never blocks the user interface and never fails during network outages.
 
-* **Sincronización Automática con WorkManager:** Encolamiento de tareas periódicas y reactivas sujetas a restricciones de conectividad (`NetworkType.CONNECTED`). Al detectar red, el motor despacha los lotes pendientes de forma transparente en segundo plano.
+* **Automatic Sync with WorkManager:** Periodic and reactive task queuing subject to connectivity constraints (`NetworkType.CONNECTED`). Upon detecting a network, the engine dispatches pending batches transparently in the background.
 
-* **Transaccionalidad e Idempotencia:** Identificadores únicos basados en UUID generados en el cliente evitan duplicados en el servidor central. El motor marca localmente los registros confirmados como sincronizados únicamente tras recibir la validación formal del backend.
+* **Transactional Integrity and Idempotency:** UUID-based unique identifiers generated on the client prevent duplicates on the central server. The engine marks confirmed records as synced locally only after receiving formal validation from the backend.
 
-* **Forzado Manual de Sincronización:** Botón de despacho inmediato para operadores que finalizan su jornada y requieren transferir datos al instante antes de cerrar turno o cambiar de zona.
+* **Manual Sync Override:** Instant dispatch button for operators finishing their shift who need to transfer data immediately before clocking out or moving to another zone.
 
-* **Auditoría de Registros en Pantalla:** Consola visual incorporada que detalla el identificador, tipo de carga y estado de sincronización (`[PENDING]` vs `[SYNCED]`) en tiempo real.
+* **On-Screen Record Auditing:** Built-in visual console that details the identifier, payload type, and synchronization status (`[PENDING]` vs `[SYNCED]`) in real time.
 
-* **Interoperabilidad Corporativa (REST API):** El servidor central expone puntos de acceso livianos en Node.js y Express con almacenamiento SQL, permitiendo su fácil integración con sistemas ERP, depósitos o paneles de control ya existentes.
+* **Enterprise Interoperability (REST API):** The central server exposes lightweight endpoints in Node.js and Express with SQL storage, enabling easy integration with existing ERP systems, warehouses, or control dashboards.
 
-* **Eficiencia Energética y de Datos:** El proceso de sincronización procesa únicamente deltas de datos (registros con bandera `is_synced = 0`), minimizando el uso de batería y el consumo de datos móviles en planes limitados de flotas corporativas.
-
----
-
-## 🛡️ Confiabilidad y Resiliencia Empresarial
-
-* **Cero Pérdida de Datos en Terreno:** La persistencia local sobrevive reinicios imprevistos de la batería, cierres forzados de la aplicación o apagones en el dispositivo de campo.
-* **Tolerancia a Conexiones Intermitentes:** Los reintentos automáticos aplican lógica de espera exponencial gestionada por el runtime del sistema operativo.
-* **Procesamiento de Lotes Compacto:** Payload serializado en JSON nativo sin cabeceras superfluas para garantizar transferencias rápidas incluso sobre redes 2G/3G inestables.
+* **Energy and Data Efficiency:** The synchronization process handles only data deltas (records flagged `is_synced = 0`), minimizing battery usage and mobile data consumption on limited corporate fleet plans.
 
 ---
 
-## ⚙️ ¿Qué Hace? (Módulos Disponibles)
+## 🛡️ Enterprise Reliability and Resilience
 
-1. **Captura de Transacciones en Campo (`MainActivity.kt`):** Formulario ergonómico optimizado para ingreso rápido de pedidos, control de stock o relevamiento de daños con tipificación estructurada.
-
-2. **Capa de Persistencia Local (`DatabaseHelper.kt`):** Motor SQLite que encapsula transacciones seguras (`beginTransaction` / `endTransaction`), serialización a objetos JSON y control de flags de entrega.
-
-3. **Cliente de Integración de Red (`ApiService.kt`):** Módulo de bajo nivel basado en `HttpURLConnection` que despacha solicitudes autenticables, valida códigos de estado HTTP y extrae listas de identificadores procesados.
-
-4. **Orquestador en Segundo Plano (`SyncWorker.kt`):** Tarea asíncrona desacoplada del ciclo de vida de la interfaz de usuario que garantiza el cumplimiento de las políticas de despacho según las condiciones del hardware.
-
-5. **Servidor Receptor Central (`server.js`):** API REST transaccional que recibe lotes, actualiza el estado consolidado mediante sentencias preparadas y expone consultas de inspección.
+* **Zero Data Loss in the Field:** Local persistence survives unexpected battery restarts, forced app closures, or power outages on the field device.
+* **Tolerance to Intermittent Connections:** Automatic retries apply exponential backoff logic managed by the operating system runtime.
+* **Compact Batch Processing:** Payload serialized in native JSON without superfluous headers to guarantee fast transfers even over unstable 2G/3G networks.
 
 ---
 
-## 🛠️ Tecnologías Utilizadas
+## ⚙️ What It Does (Available Modules)
 
-* **Lenguaje Móvil:** Kotlin 2.0.
-* **Persistencia Cliente:** SQLite nativo (`SQLiteOpenHelper`) sin overhead de dependencias pesadas.
-* **Planificación de Tareas:** Android Jetpack `WorkManager`.
-* **Capa de Red Móvil:** HTTP nativo con serialización JSON estándar.
-* **Backend:** Node.js, Express y SQLite3.
-* **Compatibilidad Android:** Android 8.0 (API 26) hasta Android 14+ (API 34).
-* **Entorno de Desarrollo:** Android Studio & Visual Studio Code.
+1. **Field Transaction Capture (`MainActivity.kt`):** Ergonomic form optimized for rapid entry of orders, stock control, or damage assessment with structured classification.
+
+2. **Local Persistence Layer (`DatabaseHelper.kt`):** SQLite engine that encapsulates safe transactions (`beginTransaction` / `endTransaction`), serialization to JSON objects, and delivery flag control.
+
+3. **Network Integration Client (`ApiService.kt`):** Low-level module based on `HttpURLConnection` that dispatches authenticable requests, validates HTTP status codes, and extracts lists of processed identifiers.
+
+4. **Background Orchestrator (`SyncWorker.kt`):** Asynchronous task decoupled from the user interface lifecycle that guarantees compliance with dispatch policies according to hardware conditions.
+
+5. **Central Receiving Server (`server.js`):** Transactional REST API that receives batches, updates consolidated state through prepared statements, and exposes inspection queries.
 
 ---
 
-## 🚀 Instalación y Uso
+## 🛠️ Tech Stack
 
-1. Descarga el APK firmado desde la sección **Releases** (Lanzamientos) [**aquí**](../../releases).
-2. Habilita la opción "Instalar desde fuentes desconocidas" en tu navegador o administrador de archivos y, a continuación, abre el APK para instalarlo.
+* **Mobile Language:** Kotlin 2.0.
+* **Client Persistence:** Native SQLite (`SQLiteOpenHelper`) with no heavy dependency overhead.
+* **Task Scheduling:** Android Jetpack `WorkManager`.
+* **Mobile Network Layer:** Native HTTP with standard JSON serialization.
+* **Backend:** Node.js, Express, and SQLite3.
+* **Android Compatibility:** Android 8.0 (API 26) through Android 14+ (API 34).
+* **Development Environment:** Android Studio & Visual Studio Code.
 
-## 👨‍💻 Autor
+---
 
-Desarrollado por **Yuri Alexander Pagel Krüger**
+## 🚀 Installation and Usage
+
+1. Download the signed APK from the **Releases** section [**here**](../../releases).
+2. Enable "Install from unknown sources" in your browser or file manager, then open the APK to install it.
+
+## 👨‍💻 Author
+
+Developed by **Yuri Alexander Pagel Krüger**

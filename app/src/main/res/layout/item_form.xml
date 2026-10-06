@@ -24,7 +24,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Cliente"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -32,7 +31,6 @@
                 android:id="@+id/txtStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="pendiente"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -40,7 +38,6 @@
             android:id="@+id/txtAgent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Agente"
             android:textSize="13sp"
             android:layout_marginTop="4dp" />
 
@@ -48,7 +45,6 @@
             android:id="@+id/txtType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Tipo"
             android:textSize="13sp"
             android:layout_marginTop="2dp" />
 
@@ -56,17 +52,16 @@
             android:id="@+id/txtDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Fecha"
             android:textSize="12sp"
             android:layout_marginTop="2dp"
-            android:textColor="#666666" />
+            android:textColor="@color/text_secondary" />
 
         <Button
             android:id="@+id/btnDelete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:text="Eliminar"
+            android:text="@string/btn_delete"
             android:textSize="11sp"
             android:minWidth="0dp"
             android:minHeight="0dp"

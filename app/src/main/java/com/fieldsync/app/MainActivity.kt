@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
             lifecycleScope.launch {
                 binding.progressSync.visibility = View.VISIBLE
                 binding.btnSync.isEnabled = false
-                val result = viewModel.syncNow()
+                val result = viewModel.syncNow(this@MainActivity)
                 binding.progressSync.visibility = View.GONE
                 binding.btnSync.isEnabled = true
                 Toast.makeText(this@MainActivity, result.message, Toast.LENGTH_LONG).show()
@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
         networkMonitor = NetworkMonitor(this)
         networkMonitor.start { online ->
             runOnUiThread {
-                binding.txtStatus.text = if (online) "En línea" else "Sin conexión"
+                binding.txtStatus.text = if (online) getString(R.string.online) else getString(R.string.offline)
                 binding.statusDot.setBackgroundResource(
                     if (online) R.drawable.dot_online else R.drawable.dot_offline
                 )
@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity() {
     private fun updatePending() {
         lifecycleScope.launch {
             val count = viewModel.pendingCount()
-            binding.txtPending.text = "Pendientes: $count"
+            binding.txtPending.text = getString(R.string.msg_pending_count, count)
         }
     }
 

@@ -1,5 +1,6 @@
 package com.fieldsync.app.ui.form
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fieldsync.app.FieldSyncApplication
@@ -39,5 +40,5 @@ class FormViewModel : ViewModel() {
 
     suspend fun pendingCount(): Int = repo().countPending()
 
-    suspend fun syncNow(): SyncResult = repo().syncPending()
+    suspend fun syncNow(context: Context): SyncResult = repo().syncPending(context)
 }
